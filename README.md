@@ -4,11 +4,6 @@
   
   ATS library by: @minorlegato
   
-  
-  <p>2D - version:
-    <p>no current activity</p>
-  </p>
-  <p>3D - version:
-    <p>fix camera movement</p>
-  </p>
+  fixes:
+  - fix camera movement
 </p>
