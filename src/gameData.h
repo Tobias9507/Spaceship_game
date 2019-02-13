@@ -5,7 +5,7 @@
 
 //==========================GAME DATA=======================//
 
-#define xtiles 		150
+#define xtiles 		160
 #define ytiles 		40
 #define NO_BLOCK	0
 #define BLOCK 		1
@@ -170,6 +170,10 @@ void blast4(int x, int y){
 	deleteBlock(x+4, y-1);
 	deleteBlock(x+4, y);
 	deleteBlock(x+4, y+1);
+}
+
+float getNoise(int x, int y){
+	return stb_perlin_noise3((counter+x)*0.1, y*0.1, 0, 0, 0, 0);
 }
 
 void updateMap(){	

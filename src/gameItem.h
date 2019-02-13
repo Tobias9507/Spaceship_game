@@ -116,7 +116,7 @@ void updateGrenade(gameItem* itm, float t, int col){
 	if(!(COLLISION(col, Right) || 
 		COLLISION(col, Top) || 
 		COLLISION(col, Bot)) && 
-		itm->pos.x < 80){
+		itm->pos.x < 210){
 		if(itm->initVel < 0)
 			itm->initVel = 0;
 		itm->pos.x += (itm->initVel + 50) * t;
@@ -131,7 +131,7 @@ void updateClusterGrenade(gameItem* itm, float t, int col, Array<gameItem>* item
 	if(!(COLLISION(col, Right) || 
 		COLLISION(col, Top) || 
 		COLLISION(col, Bot)) && 
-		itm->pos.x < 80){
+		itm->pos.x < 210){
 		if(itm->initVel < 0)
 			itm->initVel = 0;
 		itm->pos.x += (itm->initVel + 50) * t;
@@ -175,7 +175,7 @@ void updateMissile(gameItem* itm, float t, int col){
 	if(!(COLLISION(col, Right) || 
 		COLLISION(col, Top) || 
 		COLLISION(col, Bot)) && 
-		itm->pos.x < 80){
+		itm->pos.x < 210){
 		if(itm->initVel < 0)
 			itm->initVel = 0;
 		itm->pos.x += (itm->initVel + 20 + itm->vel.x) * t;

@@ -25,7 +25,8 @@ float newCamXpos;
 float newCamYpos;
 float camDelay;
 
-int HIGH_SCORE = 2661082;
+int HIGH_SCORE = 3178705;
+				//2661082;
 				//10045391;
 				//4113240
 				//930249
@@ -96,37 +97,40 @@ int coreIsOpen(){
 void coreDestroy(){ window_destroy(Window);}
 
 void cameraPos(){
-	camDelay += time;
+	/*camDelay += time;
 	while(camDelay > 0.05f){
 		camDelay -= 0.05f;
 		lastCamXpos = newCamYpos;
 		lastCamYpos = newCamYpos;
 		newCamYpos = getYpos(player);
 		newCamXpos = 0;
-	}	
+	}*/	
 	newCamXpos -= mapWarp;
 
-	cameraXpos = 0;//getXpos(player) - 10; //lerp(lastCamXpos, newCamXpos, 10*camDelay);
-	cameraYpos = lerp(lastCamYpos, newCamYpos, 20*camDelay);
+	//cameraXpos = 0;//getXpos(player) - 10; //lerp(lastCamXpos, newCamXpos, 10*camDelay);
+	//cameraYpos = lerp(lastCamYpos, newCamYpos, 20*camDelay);
+	
+	cameraXpos = lerp(cameraXpos, getXpos(player) - 10, 10.0f * time);
+	cameraYpos = lerp(cameraYpos, getYpos(player), 5.0f * time);
 }
 
 void stateUpdate(){
 	if(getXpos(player) < 0.7 ||
 		getYpos(player) < 1.7 ||
 		getYpos(player) > 38.3){restart();}
-	else if(getXpos(player) < 20){
+	else if(getXpos(player) < 50){
 		speed = 6;
 		if(randf(0.0f, 1.0f) > 0.98)
 			flashRed(60, 0.5f, 0.5f);
 	}
-	else if(getXpos(player) < 50){
+	else if(getXpos(player) < 100){
 		if(getXpos(player) < 30){speed = 8;}
 		else if(getXpos(player) < 40){speed = 10;}
 		else {speed = 12;}
 		if(randf(0.0f, 1.0f) > 0.98)
 			flashPurple(30, 0.5f, 0.3f);
 	}
-	else if(getXpos(player) < 80){
+	else if(getXpos(player) < 159){
 		if(getXpos(player) < 60){speed = 14;}
 		else if(getXpos(player) < 70){speed = 16;}
 		else {speed = 18;}
@@ -194,7 +198,7 @@ void renderMap(){
 			if(tileType(x, y) == BLOCK){
 				render_cube	(x+0.05-mapWarp, y+0.05, 
 							x+0.95-mapWarp, y+0.95, 
-							x/80.0*0.8+0.2, -0.1, 
+							getNoise(x, y)*0.9f+1.0f, -0.1, 
 							120, 50, 210, 255-150*(abs(x-getXpos(player))/100.0));
 			} else {
 				if(x < 10){
@@ -225,13 +229,17 @@ void renderMap(){
 			}
 		}
 	}
-	render_cube(0, -50, 
-					150, 1, 0.5, 0, 
-					205, 0, 50, 200);
-	render_cube(0, 39, 
-					150, 90, 0.5, 0, 
-					205, 0, 50, 200);
-	
+	for(int x = 0; x < 160; x++){
+		for(int y = 0; y < 20; y++){
+			float a = (randf(150.0f, 190.0f)*((20.0f-y)/20.0f));
+			render_cube(x-mapWarp, 0-y, 
+						x+1-mapWarp, 1-y, 0.5, 0, 
+						randi(205, 255), randi(0, 20), randi(10, 50), a);
+			render_cube(x-mapWarp, 39+y, 
+						x+1-mapWarp, 40+y, 0.5, 0, 
+						randi(205, 255), randi(0, 20), randi(10, 50), a);		
+		}
+	}
 }
 
 void renderPlayer(){	
@@ -347,9 +355,11 @@ void renderText(){
 	render_string(buffer, 65, 41, 1, 0.15f, -0.15f, {255, 0, 0, 255});
 	sprintf(buffer, "%d", clusterGrenadesLeft(player));
 	render_string(buffer, 70, 41, 1, 0.15f, -0.15f, {100, 255, 0, 255});
-	render_rectangle(0.0f, 40.0f, 80.0f, 41.0f, 0.9f, 0, 0, 0, 255);
 
+	glDisable(GL_DEPTH_TEST);
+	render_rectangle(3.0f, 39.0f, 75.0f, 42.0f, 0.9f, 0, 0, 0, 150);
 	bitmaps_render();
+	glEnable(GL_DEPTH_TEST);
 }
 
 void coreUpdateAndRender(){
@@ -366,7 +376,7 @@ void coreUpdateAndRender(){
 	cameraPos();
 	
 	window_update_view(Window, 
-						cameraXpos, cameraYpos, 6,
+						cameraXpos, cameraYpos, 4,
 						getXpos(player), getYpos(player), 0,
 						0, 0, 1,
 						60, 1, 300
@@ -376,6 +386,7 @@ void coreUpdateAndRender(){
 
 	if(getState(STATE) == STARTUP){
 		delay -= time;
+		mapUpdate();
 		renderMap();
 		renderPlayer();
 		renderItems();
