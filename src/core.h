@@ -199,7 +199,7 @@ void renderMap(){
 				render_cube	(x+0.05-mapWarp, y+0.05, 
 							x+0.95-mapWarp, y+0.95, 
 							getNoise(x, y)*0.9f+1.0f, -0.1, 
-							120, 50, 210, 255-150*(abs(x-getXpos(player))/100.0));
+							120, 50, 210, 255-100*(abs(x-getXpos(player))/100.0));
 			} else {
 				if(x < 10){
 					render_cube(x+0.1-mapWarp, y+0.1, 
@@ -363,12 +363,6 @@ void renderText(){
 }
 
 void coreUpdateAndRender(){
-	//cameraPos();
-
-	//cameraXpos = lerp(lastCamXpos, newCamXpos, camDelay) - 10;
-	//cameraYpos = lerp(lastCamYpos, newCamYpos, camDelay);
-
-	//=============
 	stateUpdate();
 	time = timer_restart(&timer);
 	mapWarp += time*speed;

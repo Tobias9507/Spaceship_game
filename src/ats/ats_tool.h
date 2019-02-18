@@ -714,12 +714,12 @@ static void window_update_view(
 
     glViewport(0, 0, w, h);
     gluPerspective(fov, (r32)w / (r32)h, near_plane, far_plane);
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
     gluLookAt(pos_x,    pos_y,  pos_z,
               look_x,   look_y, look_z,
               up_x,     up_y,   up_z);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 }
 
 static v3 get_3d_point(v2 pos) {
@@ -768,7 +768,62 @@ static void render_rectangle(r32 px, r32 py, r32 qx, r32 qy, r32 z, u8 r, u8 g, 
 }
 
 static void render_cube(r32 px, r32 py, r32 qx, r32 qy, r32 pz, r32 qz, u8 r, u8 g, u8 b, u8 a) {
+
+    render_color(r, g, b, a*0.7f);
+
+    glLoadIdentity();
+
+    render_begin(QUADS);
+
+    render_vertex(px, py, pz);
+    render_vertex(qx, py, pz);
+    render_vertex(qx, qy, pz);
+    render_vertex(px, qy, pz);
+
+    render_end();
+
     render_color(r, g, b, a);
+
+    glLoadIdentity();
+    glTranslatef(px+(qx-px)/2-0.5, py+(qx-px)/2-0.5, pz+(qx-px)/2-0.5);
+    glScalef((qx-px)/2,(qy-py)/2,(qz-pz)/2);
+
+    render_begin(QUADS);
+    // UP
+    render_vertex(-1, -1, -1);
+    render_vertex(1, -1, -1);
+    render_vertex(1, 1, -1);
+    render_vertex(-1, 1, -1);
+
+    render_color(r, g, b, a*0.9);
+    
+    
+    
+    render_end();
+
+
+
+
+/*
+    // Right
+    render_vertex(-1, 1, -1);
+    render_vertex(-1, 1, 1);
+    render_vertex(1, 1, 1);
+    render_vertex(1, 1, -1);
+    // LEFT
+    render_vertex(-1, -1, -1);
+    render_vertex(-1, -1, 1);
+    render_vertex(1, -1, 1);
+    render_vertex(1, -1, -1);
+    // FRONT
+    render_vertex(-1, -1, -1);
+    render_vertex(-1, -1, 1);
+    render_vertex(-1, 1, 1);
+    render_vertex(-1, 1, -1);
+
+    render_end();
+    
+    /*render_color(r, g, b, a);
 
     render_begin(QUADS);
     // UP
@@ -795,7 +850,7 @@ static void render_cube(r32 px, r32 py, r32 qx, r32 qy, r32 pz, r32 qz, u8 r, u8
     render_vertex(px, qy, qz);
     render_vertex(px, qy, pz);
     
-    render_end();
+    render_end();*/
 }
 
 static void render_triangle(

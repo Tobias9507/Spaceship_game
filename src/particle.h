@@ -218,31 +218,25 @@ void restartAnimation(float life, float intensity){
 
 void thrust(v2 pos, float zpos, float zvel,
 			float r, float life, float delay){
-	for(int i = 0; i < 1; i++){
-		particles.add(
-				createParticle(
-					pos, {randf(-50.0f, -15.0f), randf(-10.0f, 10.0f)}, {0, 0},
-					zpos, zvel,
-					r, life, delay,
-					randi(200, 255), 0, randi(0, 50), 0.5f
-					));
-	}
+	particles.add(
+			createParticle(
+				pos, {randf(-50.0f, -15.0f), randf(-10.0f, 10.0f)}, {0, 0},
+				zpos, zvel,
+				r, life, delay,
+				randi(200, 255), 0, randi(0, 50), 0.5f
+				));
 }
 
-//120, 50, 210,
-
-//randi(150, 255), 0, randi(150, 255)
-
 void splitBlock(int x, int y){
-	particles.add(
+	/*particles.add(
 				createParticle(
 					{(float)x+0.5f, (float)y+0.5f}, {((float)randi(0,100)-50.0f)/100.0f, ((float)randi(0,100)-50)/10.0f}, {0, 0},
 					0.1f, randf(5.0f, 10.0f),
 					randf(0.4f, 0.5f), randf(0.4f, 1.2f), 0,
 					randi(100, 140), 50, randi(190, 240), randf(0.5f, 0.7f)
-					));
-	for(int xp = 0; xp < NR_OFF/2; xp++){
-		for(int yp = 0; yp < NR_OFF/2; yp++){
+					));*/
+	for(int xp = 0; xp < NR_OFF/3; xp++){
+		for(int yp = 0; yp < NR_OFF/3; yp++){
 			float posx = ((float)x)+xp/NR_OFF;
 			float posy = ((float)y)+yp/NR_OFF;
 			float accx = ((((float)xp)-NR_OFF/2.0f)*ACC)*((float)randi(250,400))/100.0f;
@@ -251,7 +245,7 @@ void splitBlock(int x, int y){
 			particles.add(
 				createParticle(
 					{posx, posy}, {0, 0}, {accx, accy},
-					-1.0f, ((float)randi(200,2500)/100.0f),
+					randf(-1.5f, 0.5f), randf(2.0f, 40.0f),
 					randf(0.1f, 0.25f), randf(0.3f, 1.3f), 0,
 					randi(80, 160), 50, randi(180, 250), randf(0.2f, 0.6f)
 					));
