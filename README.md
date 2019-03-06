@@ -5,5 +5,6 @@
   ATS library by: @minorlegato
   
   fixes:
-  - fix camera movement
+  - fix camera movement - Done
+  - graphic optimization in progress (a litle messed up graphics right now)
 </p>
