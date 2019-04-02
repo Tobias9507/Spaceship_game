@@ -159,22 +159,22 @@ void bounce(gameObject* obj){
 	bool bounced = false;
 	if(obj->starlife == 0.0f) {
 		if(COLLISION(obj->col, Bot)){
-			obj->vel.y = -obj->vel.y/10;
+			obj->vel.y = -obj->vel.y/20;
 			bounced = true;
 			obj->pos.y += 0.1;
 		}
 		else if(COLLISION(obj->col, Top)){
-			obj->vel.y = -obj->vel.y/10;
+			obj->vel.y = -obj->vel.y/20;
 			bounced = true;
 			obj->pos.y -= 0.1;
 		}
 		if(COLLISION(obj->col, Right)){
-			obj->vel.x = -obj->vel.x/10;
+			obj->vel.x = -obj->vel.x/20;
 			bounced = true;
 			obj->pos.x -= 0.1;
 		}
 		else if(COLLISION(obj->col, Left)){
-			obj->vel.x = -obj->vel.x/10;
+			obj->vel.x = -obj->vel.x/20;
 			bounced = true;
 			obj->pos.x += 0.1;
 		}
@@ -237,9 +237,9 @@ void updateObject(gameObject* obj, float t, float cOffset){
 		while(warp > 0.5f){
 			blast1((int)obj->pos.x, (int)obj->pos.y);
 			if(obj->starlife > 2.0f)
-				collectEffect(obj->pos.x+0.05f, obj->pos.y+0.05f, randi(150, 255), randi(150, 255), randi(150, 255));
+				starEffect(obj->pos.x+0.05f, obj->pos.y+0.05f, randi(150, 255), randi(150, 255), randi(150, 255));
 			else
-				collectEffect(obj->pos.x+0.05f, obj->pos.y+0.05f, 255,  0, 50);
+				starEffect(obj->pos.x+0.05f, obj->pos.y+0.05f, 255,  0, 50);
 			warp -= 0.05f;
 		}
 		if(obj->pos.y < 2.0f){

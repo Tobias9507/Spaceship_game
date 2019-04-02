@@ -754,6 +754,38 @@ static v3 get_3d_point(v2 pos) {
 #define render_col_vertex(x, y, z, r, g, b, a)  (glColor4ub((r), (g), (b), (a)),    glVertex3f((x), (y), (z)))
 #define render_tex_vertex(x, y, z, tx, ty)      (glTexCoord2f((tx), (ty)),          glVertex3f((x), (y), (z)))
 
+u32 displaylist_cube;
+static void render_init(){
+    displaylist_cube = glGenLists(1);
+
+    // compile the display list, store a triangle in it
+    glNewList(displaylist_cube, GL_COMPILE);
+        render_begin(QUADS);
+        // UP
+        render_vertex(-1, -1, -1);
+        render_vertex(1, -1, -1);
+        render_vertex(1, 1, -1);
+        render_vertex(-1, 1, -1);
+        // Right
+        render_vertex(-1, 1, -1);
+        render_vertex(-1, 1, 1);
+        render_vertex(1, 1, 1);
+        render_vertex(1, 1, -1);
+        // LEFT
+        render_vertex(-1, -1, -1);
+        render_vertex(-1, -1, 1);
+        render_vertex(1, -1, 1);
+        render_vertex(1, -1, -1);
+        // FRONT
+        render_vertex(-1, -1, -1);
+        render_vertex(-1, -1, 1);
+        render_vertex(-1, 1, 1);
+        render_vertex(-1, 1, -1);
+
+        render_end();
+    glEndList();
+}
+
 static void render_rectangle(r32 px, r32 py, r32 qx, r32 qy, r32 z, u8 r, u8 g, u8 b, u8 a) {
     render_color(r, g, b, a);
 
@@ -769,42 +801,23 @@ static void render_rectangle(r32 px, r32 py, r32 qx, r32 qy, r32 z, u8 r, u8 g, 
 
 static void render_cube(r32 px, r32 py, r32 qx, r32 qy, r32 pz, r32 qz, u8 r, u8 g, u8 b, u8 a) {
 
-    render_color(r, g, b, a*0.7f);
-
-    glLoadIdentity();
-
-    render_begin(QUADS);
-
-    render_vertex(px, py, pz);
-    render_vertex(qx, py, pz);
-    render_vertex(qx, qy, pz);
-    render_vertex(px, qy, pz);
-
-    render_end();
-
     render_color(r, g, b, a);
 
     glLoadIdentity();
-    glTranslatef(px+(qx-px)/2-0.5, py+(qx-px)/2-0.5, pz+(qx-px)/2-0.5);
+    glTranslatef(px+(qx-px)/2, py+(qy-py)/2, pz+(qz-pz)/2);
     glScalef((qx-px)/2,(qy-py)/2,(qz-pz)/2);
 
-    render_begin(QUADS);
+    glCallList(displaylist_cube);
+
+    /*render_begin(QUADS);
     // UP
     render_vertex(-1, -1, -1);
     render_vertex(1, -1, -1);
     render_vertex(1, 1, -1);
     render_vertex(-1, 1, -1);
 
-    render_color(r, g, b, a*0.9);
+    //render_color(r, g, b, a*0.9);
     
-    
-    
-    render_end();
-
-
-
-
-/*
     // Right
     render_vertex(-1, 1, -1);
     render_vertex(-1, 1, 1);
@@ -821,35 +834,6 @@ static void render_cube(r32 px, r32 py, r32 qx, r32 qy, r32 pz, r32 qz, u8 r, u8
     render_vertex(-1, 1, 1);
     render_vertex(-1, 1, -1);
 
-    render_end();
-    
-    /*render_color(r, g, b, a);
-
-    render_begin(QUADS);
-    // UP
-    render_vertex(px, py, pz);
-    render_vertex(qx, py, pz);
-    render_vertex(qx, qy, pz);
-    render_vertex(px, qy, pz);
-
-    render_color(r, g, b, a*0.9);
-
-    // Right
-    render_vertex(px, qy, pz);
-    render_vertex(px, qy, qz);
-    render_vertex(qx, qy, qz);
-    render_vertex(qx, qy, pz);
-    // LEFT
-    render_vertex(px, py, pz);
-    render_vertex(px, py, qz);
-    render_vertex(qx, py, qz);
-    render_vertex(qx, py, pz);
-    // FRONT
-    render_vertex(px, py, pz);
-    render_vertex(px, py, qz);
-    render_vertex(px, qy, qz);
-    render_vertex(px, qy, pz);
-    
     render_end();*/
 }
 

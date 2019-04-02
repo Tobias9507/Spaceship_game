@@ -60,6 +60,8 @@ void coreInit(int w, int h, const char* title){
 	newCamYpos = getYpos(player);
 	STATE = allocGameState();
 	setState(STATE, STARTUP); 
+
+	render_init();
 }
 
 void restart(){
@@ -121,21 +123,21 @@ void stateUpdate(){
 	else if(getXpos(player) < 50){
 		speed = 6;
 		if(randf(0.0f, 1.0f) > 0.98)
-			flashRed(60, 0.5f, 0.5f);
+			flashRed(30, 0.5f, 0.5f);
 	}
-	else if(getXpos(player) < 100){
+	else if(getXpos(player) < 50){
 		if(getXpos(player) < 30){speed = 8;}
 		else if(getXpos(player) < 40){speed = 10;}
 		else {speed = 12;}
 		if(randf(0.0f, 1.0f) > 0.98)
-			flashPurple(30, 0.5f, 0.3f);
+			flashPurple(20, 0.5f, 0.3f);
 	}
-	else if(getXpos(player) < 159){
+	else if(getXpos(player) < 120){
 		if(getXpos(player) < 60){speed = 14;}
 		else if(getXpos(player) < 70){speed = 16;}
 		else {speed = 18;}
 		if(randf(0.0f, 1.0f) > 0.98)
-			flashRainbow(30, 0.5f, 0.3f);
+			flashRainbow(20, 0.5f, 0.3f);
 	} else {speed = 100; setAcc(player, -10.0f, getYacc(player)); SCORE += 10000; flashRainbow(50, 0.5f, 0.8f);}
 	SCORE += (int)((time*(float)(speed*speed))*10.0f) + getScore();
 	if(SCORE < 10000)
@@ -194,13 +196,14 @@ void mapUpdate(){
 
 void renderMap(){
 	for(int y = 1; y < ytiles - 1; y++){
-		for(int x = 0; x < xtiles; x++){
+		for(int x = 0; x < xtiles - 40; x++){
 			if(tileType(x, y) == BLOCK){
 				render_cube	(x+0.05-mapWarp, y+0.05, 
 							x+0.95-mapWarp, y+0.95, 
-							getNoise(x, y)*0.9f+1.0f, -0.1, 
+							getNoise(x, y)*0.9f+1.0f, 0.0, 
 							120, 50, 210, 255-100*(abs(x-getXpos(player))/100.0));
-			} else {
+			} 
+			else {
 				if(x < 10){
 					render_cube(x+0.1-mapWarp, y+0.1, 
 								x+0.9-mapWarp, y+0.9, 0.0, -0.05, 
@@ -215,10 +218,10 @@ void renderMap(){
 								rfade, 0, bfade, afade);
 				}
 				else{
-				render_cube(x+0.1-mapWarp, y+0.1, 
-								x+0.9-mapWarp, y+0.9, 0.0, -0.05, 
-								150, 0, 255, 40);
-				}
+					render_cube(x+0.1-mapWarp, y+0.1, 
+									x+0.9-mapWarp, y+0.9, 0.0, -0.05, 
+									150, 0, 255, 40);
+					}
 				if(tileType(x, y) == ITEM){
 					setBlock(x, y, NO_BLOCK);
 					if(randf(0.0f, 1.0f) > 0.95 && getState(STATE) == GAME)// 0.95 <---CHANGE TO!
@@ -227,6 +230,28 @@ void renderMap(){
 						items.add(randomCollectable(x, y));
 				}
 			}
+		}
+	}
+	for(int y = 1; y < ytiles - 1; y++){
+		for(int x = xtiles - 40; x < xtiles; x++){
+			if(tileType(x, y) == BLOCK){
+				render_cube	(x+0.05-mapWarp, y+0.05, 
+							x+0.95-mapWarp, y+0.95, 
+							getNoise(x, y)*0.9f + randf(0.25f, 0.35f)*(x - (xtiles - 39)) + 1.0, randf(0.05f, 0.2f)*(x - (xtiles - 39)), 
+							50, 50, 100, 255-100*(abs(x-getXpos(player))/100.0));
+			} 
+			else{
+				render_cube(x+0.1-mapWarp, y+0.1, 
+							x+0.9-mapWarp, y+0.9, 0.2*(x - (xtiles - 39)), -0.05, 
+							50, 50, 255, 50);
+			}
+			if(tileType(x, y) == ITEM){
+					setBlock(x, y, NO_BLOCK);
+					if(randf(0.0f, 1.0f) > 0.95 && getState(STATE) == GAME)// 0.95 <---CHANGE TO!
+						items.add(randomPowerUp(x, y));
+					else
+						items.add(randomCollectable(x, y));
+				}
 		}
 	}
 	for(int x = 0; x < 160; x++){
@@ -338,7 +363,7 @@ void renderParticles(){
 		if(!particleDelay(par)){
 			render_cube(particleXPos(par)-particleR(par), particleYPos(par)-particleR(par),
 							particleXPos(par)+particleR(par), particleYPos(par)+particleR(par), 
-							particleZPos(par) + 0.15f, particleZPos(par),
+							particleZPos(par) + 0.25f, particleZPos(par),
 							particleRed(par), particleGreen(par), particleBlue(par), 
 							(int)(255.0f*particleAlpha(par)));
 		}

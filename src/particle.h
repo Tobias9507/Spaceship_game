@@ -138,19 +138,19 @@ void flashRed(int amount, float life, float intensity){
 }
 
 void systemGlitch(){
-	for(int i = 0; i < 40; i++){
+	for(int i = 0; i < 20; i++){
 		particles.add(
 			createParticle(
 				{randf(60.0f, 120.0f), randf(5.0f, 35.0f)}, {0, 0}, {0, 0},
 				2.0f, 1.0f,
-				randf(0.3f, 0.7f), randf(0.1f, 0.4f), randf(0.0f, 0.2f),
+				randf(0.3f, 0.7f), randf(0.1f, 0.3f), randf(0.0f, 0.1f),
 				255, 255, 255, randf(0.4f, 0.6f)
 				));
 	}
 }
 
 void starfall(float x, float y){
-	for(int i = 0; i < 5; i++){
+	for(int i = 0; i < 2; i++){
 		particles.add(
 			createParticle(
 				{x+0.5f, y+0.5f}, {randf(-5.0f, 40.0f), randf(-25.0f, 25.0f)}, {0, 0},
@@ -171,14 +171,7 @@ void restartAnimation(float life, float intensity){
 	else if(intensity < 0.1f)
 		intensity = 0.1f;
 
-	particles.add(
-		createParticle(
-			{40, 20}, {0, 0}, {0, 0},
-			1.0f, 1.0f,
-			40.0f, life, 0.0f,
-			255, 255, 255, intensity
-			));
-	for(int i = 0; i < 10; i++){
+	for(int i = 0; i < 20; i++){
 		particles.add(
 		createParticle(
 			{randf(5.0f, 75.0f), randf(5.0f, 35.0f)}, {0, 0}, {0, 0},
@@ -187,7 +180,7 @@ void restartAnimation(float life, float intensity){
 			255, 255, 255, intensity
 			));
 	}
-	for(int i = 0; i < 20; i++){
+	for(int i = 0; i < 10; i++){
 		particles.add(
 		createParticle(
 			{randf(5.0f, 75.0f), randf(5.0f, 35.0f)}, {0, 0}, {0, 0},
@@ -196,7 +189,7 @@ void restartAnimation(float life, float intensity){
 			randi(150, 200), randi(150, 200), randi(150, 200), intensity*0.8f
 			));
 	}
-	for(int i = 0; i < 30; i++){
+	for(int i = 0; i < 20; i++){
 		particles.add(
 		createParticle(
 			{randf(1.0f, 79.0f), randf(1.0f, 39.0f)}, {0, 0}, {0, 0},
@@ -205,7 +198,7 @@ void restartAnimation(float life, float intensity){
 			randi(100, 140), 50, randi(190, 240), intensity*0.5f
 			));
 	}
-	for(int i = 0; i < 40; i++){
+	for(int i = 0; i < 20; i++){
 		particles.add(
 		createParticle(
 			{randf(1.0f, 79.0f), randf(1.0f, 39.0f)}, {0, 0}, {0, 0},
@@ -251,6 +244,16 @@ void splitBlock(int x, int y){
 					));
 		}
 	}
+}
+
+void starEffect(float x, float y, int red, int green, int blue){
+	particles.add(
+		createParticle(
+			{x, y}, {0, 0}, {0, 0},
+			0.5f, 2.0f,
+			0.6f, 0.3f, 0.0f,
+			red, green, blue, 0.5
+			));
 }
 
 void collectEffect(float x, float y, int red, int green, int blue){
