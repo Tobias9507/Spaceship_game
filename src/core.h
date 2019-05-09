@@ -59,7 +59,7 @@ void coreInit(int w, int h, const char* title){
 	newCamXpos = getXpos(player);
 	newCamYpos = getYpos(player);
 	STATE = allocGameState();
-	setState(STATE, STARTUP); 
+	setState(STATE, STARTUP);
 
 	render_init();
 }
